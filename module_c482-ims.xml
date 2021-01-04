@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_c482-ims" default="compile.module.c482-ims">
+  <dirname property="module.c482-ims.basedir" file="${ant.file.module_c482-ims}"/>
+  
+  <property name="module.jdk.home.c482-ims" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.c482-ims" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.c482-ims" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.c482-ims" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="c482-ims.output.dir" value="${module.c482-ims.basedir}/out/production/C482-IMS"/>
+  <property name="c482-ims.testoutput.dir" value="${module.c482-ims.basedir}/out/test/C482-IMS"/>
+  
+  <path id="c482-ims.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="c482-ims.module.production.classpath">
+    <path refid="${module.jdk.classpath.c482-ims}"/>
+  </path>
+  
+  <path id="c482-ims.runtime.production.module.classpath">
+    <pathelement location="${c482-ims.output.dir}"/>
+  </path>
+  
+  <path id="c482-ims.module.classpath">
+    <path refid="${module.jdk.classpath.c482-ims}"/>
+    <pathelement location="${c482-ims.output.dir}"/>
+  </path>
+  
+  <path id="c482-ims.runtime.module.classpath">
+    <pathelement location="${c482-ims.testoutput.dir}"/>
+    <pathelement location="${c482-ims.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.c482-ims">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.c482-ims">
+    <patternset refid="excluded.from.module.c482-ims"/>
+  </patternset>
+  
+  <path id="c482-ims.module.sourcepath">
+    <dirset dir="${module.c482-ims.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.c482-ims" depends="compile.module.c482-ims.production,compile.module.c482-ims.tests" description="Compile module C482-IMS"/>
+  
+  <target name="compile.module.c482-ims.production" depends="register.custom.compilers" description="Compile module C482-IMS; production classes">
+    <mkdir dir="${c482-ims.output.dir}"/>
+    <javac2 destdir="${c482-ims.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.c482-ims}/javac">
+      <compilerarg line="${compiler.args.c482-ims}"/>
+      <bootclasspath refid="c482-ims.module.bootclasspath"/>
+      <classpath refid="c482-ims.module.production.classpath"/>
+      <src refid="c482-ims.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.c482-ims"/>
+    </javac2>
+    
+    <copy todir="${c482-ims.output.dir}">
+      <fileset dir="${module.c482-ims.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.c482-ims.tests" depends="register.custom.compilers,compile.module.c482-ims.production" description="compile module C482-IMS; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.c482-ims" description="cleanup module">
+    <delete dir="${c482-ims.output.dir}"/>
+    <delete dir="${c482-ims.testoutput.dir}"/>
+  </target>
+</project>
